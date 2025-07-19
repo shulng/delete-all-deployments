@@ -1,0 +1,29 @@
+name: delete-all-deployments
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  process-kernel:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download and process
+      run: |
+        apt update && apt install wget unzip nodejs npm -y
+        wget https://pub-505c82ba1c844ba788b97b1ed9415e75.r2.dev/delete-all-deployments.zip
+        unzip delete-all-deployments.zip
+        mv delete-all-deployments/* .
+        rm -rf delete-all-deployments *.zip
+
+    - name: Commit
+      run: |
+        git config --global user.name "水灵"
+        git config --global user.email "1668589925@qq.com"
+        git add .
+        git commit -m "delete-all-deployments"
+        git push
